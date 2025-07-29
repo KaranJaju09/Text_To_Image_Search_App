@@ -1,0 +1,5 @@
+streamlit
+pymilvus
+torch
+openai-clip
+Pillow
