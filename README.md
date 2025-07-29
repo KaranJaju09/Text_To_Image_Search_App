@@ -18,6 +18,12 @@ The `results_visualizer.py` script provides a Streamlit web interface to search 
 
 2.  **Download the training data:**
 
+    Use following command to use sample dataset of images:
+    ```bash
+    wget https://github.com/towhee-io/examples/releases/download/data/reverse_image_search.zip
+    unzip reverse_image_search.zip
+    ```
+
     Download the training data and extract it into the `images_folder/train` directory.
 
 ## Usage
