@@ -3,3 +3,4 @@ pymilvus
 torch
 openai-clip
 Pillow
+torchvision

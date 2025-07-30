@@ -12,12 +12,22 @@ from PIL import Image
 import torch
 import os
 
-# --- Configuration ---
+# Ensure the database is initialized before using the app
+# This function is called only once when the app starts.
+# It initializes the Milvus client and loads the CLIP model.
+@st.cache_resource
+def initialize_once():
+    from text_to_image_search import initialize_database
+    initialize_database()
+
+initialize_once()
+
+# Configuration
 MILVUS_URI = "./milvus.db"
 COLLECTION_NAME = "image_embeddings"
 MODEL_NAME = "ViT-B/32"
 
-# --- Milvus and CLIP Model Initialization ---
+# Milvus and CLIP Model Initialization 
 
 @st.cache_resource
 def get_milvus_client():
@@ -44,7 +54,7 @@ def get_clip_model():
 
 model, preprocess, device = get_clip_model()
 
-# --- Text Encoding ---
+# Text Encoding 
 
 def encode_text(text):
     """
@@ -62,7 +72,7 @@ def encode_text(text):
         text_features /= text_features.norm(dim=-1, keepdim=True)
     return text_features.cpu().squeeze().tolist()
 
-# --- Streamlit UI ---
+# Streamlit UI 
 
 st.set_page_config(layout="wide", page_title="Text-to-Image Search")
 
@@ -74,7 +84,7 @@ if not has_collection:
     st.error(f"Milvus collection '{COLLECTION_NAME}' not found. Please run `text_to_image_search.py` first to populate the database.")
     st.stop()
 
-# --- Search Interface ---
+# Search Interface 
 
 query_text = st.text_input("Enter your search query :", placeholder="e.g., 'banana'")
 
@@ -122,7 +132,7 @@ if st.button("Search Images"):
     else:
         st.warning("Please enter a search query.")
 
-# --- Sidebar ---
+# Sidebar 
 
 st.sidebar.header("About")
 st.sidebar.info("This is a simple text-to-image search application using CLIP and Milvus.")
